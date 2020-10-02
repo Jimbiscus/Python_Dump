@@ -1,7 +1,9 @@
-n = 3
-r= 1
+def add_indexes(lst):
+    n = 0
+    for i in lst:
+        lst[n] = lst[n] + n
+        n = n + 1
+    return lst
 
-for i in range(1, n + 1):
-    r *= i
-
-print(r)
+l = [1, 4, 5, 9, 0]
+print(add_indexes(l))
