@@ -4,7 +4,7 @@ import serial
 from random import randint
 
 
-port = "COM3"
+port = "COM4"
 conn = serial.Serial(port, 115200)
 
 while True:
