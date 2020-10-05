@@ -2,8 +2,10 @@ from microbit import *
 import radio
 
 radio.on()
-radio.config(channel=7)
+n = 7
+radio.config(channel=n)
 
 while True:
-    radio.send("Coucou")
+    radio.send("Tupac is alive")
     sleep(400)
+    incoming = radio.receive()
