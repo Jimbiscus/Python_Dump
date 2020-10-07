@@ -54,7 +54,7 @@ def display_board():
                     intensity = PLAYER1_INTENSITY
                 else:
                     intensity = PLAYER2_INTENSITY
-                display.set_pixel(x, y,intensity)
+                display.set_pixel(x, y, intensity)
 
 
 board_initialize()
