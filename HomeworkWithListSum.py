@@ -2,7 +2,7 @@
 l = []
 somme = 0
 numbersStored = 0
-while somme <= 20:
+while somme < 20:
     entry = input("Entrez un nombre : ")
     entry = int(entry)
     somme += entry
@@ -13,3 +13,4 @@ else:
     print("plus petit nombre : " + str(l[0]))
     print("plus grand nombre : " + str(l[-1]))
     print("vous avez entré " + str(numbersStored) + " nombres.")
+
