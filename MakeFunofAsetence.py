@@ -1,5 +1,5 @@
 import random
-text = "Ce qui est naze c'est que ça sert a rien :sweat_smile: en fait, ça rend même les phrases peut lisibles."
+text = "Tu la sens toujours pas, nan, vraiment ?!?!?! Les pires heures de l histoire arrivent... pas parce qu ils décident... parce que tu laisses faire !"
 
 def capi_sentence(sentence):
     new_sentence = ""
