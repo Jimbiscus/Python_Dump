@@ -45,18 +45,19 @@ class Aventureer:
     def full_name(self):
         return f"{self.name} the {self.job}"
 
-    def level_up(self):
+    def level_up(self, levelAmount):
         self.hp   = int(self.hp * 1.05)
         self.atk  = int(self.atk + 3)
         self.res  = int(self.res + 1)
         self.gold = int(self.gold + 100)
         # Now here we can increment his level
-        self.level += 1
+        self.level += levelAmount
 
     def show_stats(self):
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
         dprintf(f"Stats of {self.full_name()}")
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:" + "")
+        dprintf("level : " + str(self.level) + "")
         dprintf("hp : " + str(self.hp) + "")
         dprintf("atk : " + str(self.atk) + "")
         dprintf("def : " + str(self.res) + "")
@@ -77,7 +78,7 @@ class Aventureer:
     def attack(self, opponent):
         print(f"{bcolors.WARNING} You are attacking {opponent.full_name()}{bcolors.ENDC}")
 
-        while self.hp > 0 and opponent.hp > 0:
+        while self.hp > 0 or opponent.hp > 0:
             input("- - - - - - -")
             # WHERE THE FIGHT TAKES PLACE
             dprintf(f"{self.name} 🗡️ {opponent.name} ☠️")
@@ -89,38 +90,31 @@ class Aventureer:
             if hero_attack_dmg < 0:
                 hero_attack_dmg = 0
             opponent.hp -= hero_attack_dmg
-
+            if opponent.hp > 0:
+                    dprintf(f"{bcolors.FAIL}☠️  {opponent.name} 🗡️ {self.name}{bcolors.ENDC}")             
+                    opponent.calculate_critical()                   
+                    heel_attack_dmg = opponent.atk - self.res
+                    if heel_attack_dmg < 0:
+                        heel_attack_dmg = 0
+                    self.hp -= heel_attack_dmg
+                # What is shown during combat
+            
+                    dprintf(f"{self.name} takes {heel_attack_dmg} DMG from {opponent.name} !")
+                    dprintf(f"❤️  {self.name} : {self.hp} HP")
+                    dprintf(f"☠️  {opponent.name} : {opponent.hp} HP")
         # What is shown during combat
             if self.hp <= 0:
                 dprint("You lose !")
-                break
-            elif opponent.hp <= 0:
-                dprint("You won !")
-                break
-            else: 
-                dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG from {self.name} !")
-
+                dprint(f"{self.name} : 0 HP")
+            if opponent.hp <= 0:
+                    dprint("You won !")
+                    dprint(f"{opponent.name} : 0 HP")
+                    self.level_up(1)
+                    break
+                
         # Now it's the turn of the opponent
-            if opponent.hp > 0:
-                dprintf(f"{bcolors.FAIL}☠️  {opponent.name} 🗡️ {self.name}{bcolors.ENDC}")
-                
-                opponent.calculate_critical()
-                    
-                heel_attack_dmg = opponent.atk - self.res
-                if heel_attack_dmg < 0:
-                    heel_attack_dmg = 0
-                self.hp -= heel_attack_dmg
-                
-            # What is shown during combat
-            if self.hp <= 0:
-                dprint("You lose !")
-            elif opponent.hp <= 0:
-                dprint(f"{opponent.hp} : 0 HP")
-                dprint("You won !")
-            else:
-                dprintf(f"{self.name} takes {heel_attack_dmg} DMG from {opponent.name} !")
-                dprintf(f"❤️  {self.name} : {self.hp} HP")
-                dprintf(f"☠️  {opponent.name} : {opponent.hp} HP")
+            
+
 
 
 
@@ -151,14 +145,17 @@ def show_chars():
         print(f"  {character.name}")
     print(":-=-=-=-=-:")
 
+def initGame():
+    show_chars()
+    hero = choose_character()
+    heel = choose_ennemy()
+    hero.show_stats()
+    hero.attack(heel)
 
-show_chars()
-hero = choose_character()
-heel = choose_ennemy()
+def continueGame():
+    hero.show_stats()
 
 
-# Show the stats
-hero.show_stats()
+    
 
-# Attack an ennemy
-hero.attack(heel)
+initGame()
