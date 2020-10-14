@@ -1,4 +1,18 @@
 from random import randint
+import time
+import sys
+
+def dprint(s):
+    for c in s:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.07)
+def dprintf(s):
+    for c in s:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.01)
+    sys.stdout.write("\n")
 
 
 class Aventureer:
@@ -20,14 +34,14 @@ class Aventureer:
         self.gold = int(self.gold + 100)
 
     def show_stats(self):
-        print(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
-        print(f"Stats of {self.full_name()}")
-        print(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
-        print("hp : " + str(self.hp))
-        print("atk : " + str(self.atk))
-        print("def : " + str(self.res))
-        print("gold : " + str(self.gold))
-        print(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
+        dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
+        dprintf(f"Stats of {self.full_name()}")
+        dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:" + "")
+        dprintf("hp : " + str(self.hp) + "")
+        dprintf("atk : " + str(self.atk) + "")
+        dprintf("def : " + str(self.res) + "")
+        dprintf("gold : " + str(self.gold) + "")
+        dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
 
     def attack(self, opponent):
       print(f"You are attacking {opponent.full_name()}")
@@ -35,9 +49,9 @@ class Aventureer:
       battle_issue = randint(0, 1)
 
       if battle_issue == 1:
-        print("You won !")
+        dprint("You won !")
       else:
-        print("You lost !")
+        dprint("You lost !")
 
 
 
