@@ -1,12 +1,11 @@
-import time
-import sys
+from random import randint
 
-def delay_print(s):
-    for c in s:
-        sys.stdout.write(c)
-        sys.stdout.flush()
-        time.sleep(0.07)
+jesus = 7
 
-delay_print(":-=-=-=-=-=-=-=-=-: \n")
-delay_print("Stats of Jimbus \n")
-delay_print(":-=-=-=-=-=-=-=-:")
+def criticalAtk():
+    randomChance = randint(1,10)
+    print(str(randomChance))
+    if self.luck not in range(randomChance):
+        print("Coup critique!")
+
+criticalAtk()
