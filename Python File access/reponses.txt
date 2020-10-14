@@ -1,0 +1,7 @@
+Quel age as-tu ?
+ 50
+Qu'as tu mange a midi ?
+ 878946
+Aimes-tu les chats? 18418
+Quel age as-tu ? 30
+Qu'as tu mange a midi ? 30

@@ -1,3 +1,7 @@
-file = open("chien.txt", "w")
-file.write(input("Entrez vos pensées : "))
-file.close()
+
+
+while True:
+    file = open("deathnotes.txt", "a")
+#     file.write(input("Entrez qui vous voulez tuer : ") + "\n")
+    file.write("Jolan \n")
+    file.close()

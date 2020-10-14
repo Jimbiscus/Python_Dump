@@ -1,4 +1,6 @@
 from random import randint
+import time
+import sys
 
 
 class Aventureer:
@@ -20,7 +22,6 @@ class Aventureer:
         self.gold = int(self.gold + 100)
 
     def show_stats(self):
-        print(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
         print(f"Stats of {self.full_name()}")
         print(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
         print("hp : " + str(self.hp))
@@ -49,28 +50,20 @@ characters = [
     Aventureer("Bastien", "Wizard", 100, 50, 20, 100),
 ]
 
-def choose_character():
-    Hero = input("Choose your Hero : ")
-    for character in characters:
-        if character.name == Hero:
+def choose_character(character_name):
+        if Aven == Hero:
             return character
-
-def choose_ennemy():
-    Heel = input("Choose your Nemesis : ")
+def show_characters():
+    print("xxxxxx")
     for character in characters:
-        if character.name == Heel:
-            return character
-
-def show_chars():
-    print(":-=-=-=-=-:")
-    for character in characters:
-        print(f"  {character.name}")
-    print(":-=-=-=-=-:")
+        print(character.name)
+    print("xxxxx")
 
 
-show_chars()
-Hero = choose_character()
-Heel = choose_ennemy()
+show_characters()
+
+Hero = choose_character(input("Choose your Hero : "))
+# Heel = choose_character(input("Choose your Nemesis : "))
 
 # Show the stats
 Hero.show_stats()
