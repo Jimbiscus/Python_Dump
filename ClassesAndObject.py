@@ -1,3 +1,5 @@
+from random import randint
+
 class Aventurier:
     def __init__(self, name,job, hp, atk, res, gold):
         self.name = name
@@ -21,12 +23,38 @@ class Aventurier:
         print("def : " + str(self.res))
         print("gold : " + str(self.gold))
 
+Av1 = Aventurier("Thomas", "Wizard", 150, 9, 3, 0)
+Av2 = Aventurier("Bastien", "Barbarian", 140, 9.5, 4, 0)
+Av3 = Aventurier("Marcus", "Barde", 140, 9.5, 4, 0)
+Av4 = Aventurier("Jolan", "Necromancien", 140, 9.5, 4, 0)
+Av5 = Aventurier("Gimli", "Nain", 140, 9.5, 4, 0)
+Av6 = Aventurier("Legolas", "Elfe", 140, 9.5, 4, 0)
 
-Av1 = Aventurier("Thomas", "Wizard", 40, 3, 3, 0)
-Av2 = Aventurier("Bastien", "Barbarian", 30, 5, 4, 0)
+
+def fight1():
+    atkvalue = Av2.atk + randint(0, 5)
+    Av1.hp -= atkvalue
+    atkvalue = Av1.atk + randint(0, 5)
+    Av2.hp -= atkvalue
+    print(f"{Av2.fullname()} frappe !")
+    print( f"{Av1.fullname()} a perdu {atkvalue} hp ! Hp restants : {Av1.hp}")
+    print(f"{Av1.fullname()} frappe !")
+    print( f"{Av2.fullname()} a perdu {atkvalue} hp ! Hp restants : {Av2.hp}")
+
+def chooseCharacter():
+    print ("Choose your Hero :")
+    for n in Aventurier:
+        print(Aventurier.fullname(n))
+
+
+chooseCharacter()
 
 Av2.showStats()
 print("VERSUS")
 Av1.levelUp()
 Av1.showStats()
-
+n = 0
+while Av1.hp > 0 and Av2.hp > 0:
+    fight1()
+if Av1.hp <= 0 or Av2.hp <= 0:
+    print("Un des aventuriers a été vaincu...")
