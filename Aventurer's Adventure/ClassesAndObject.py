@@ -18,7 +18,8 @@ def dprintf(s):
 
 
 class Aventureer:
-    def __init__(self, name, job, hp, atk, res, gold, luck):
+    
+    def __init__(self, name, job, hp, atk, res, gold, luck, crit):
         self.name = name
         self.job = job
         self.hp = hp
@@ -47,44 +48,50 @@ class Aventureer:
         dprintf("luck : " + str(self.luck) + "")
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
 
-
+    def calculate_critical(self):
+        randomChance = randint(1,10)
+        if self.luck >= randomChance:
+            self.atk *= 2
+            print(f"---------------- Critique pour {self.name}")
+            self.crit = True
+        else:
+            pass
+        return self.atk
     def attack(self, opponent):
       print(f"You are attacking {opponent.full_name()}")
 
       while Hero.hp > 0 and Heel.hp > 0:
-        heelCritical = 1
-        heroCritical = 1
         # WHERE THE FIGHT TAKES PLACE
 
         # The Hero attacks
+        dprintf(f"{Hero.name} attacks !")
+        Hero.calculate_critical()
+      
         HeroAtkValue = Hero.atk - Heel.res
-        HeroCriticalAtk()
-        if heroCritical > 1:
-            HeroAtkValue *= heroCritical
-            print("Critique !")
-        else:
-            HeroAtkValue *= heroCritical
-            print("Nope !")
         Heel.hp -= HeroAtkValue
 
         # What is shown during combat
-        dprintf(f"{Hero.name} attacks !")
+        
         dprintf(f"{Heel.name} takes {HeroAtkValue} DMG ! HP : {Heel.hp}")
         #
+        if Hero.crit == True:
+            Hero.crit == False
+            Hero.atk //= 2
+            
 
         # The Heel attacks
-
-        HeelAtkValue = Heel.atk - Hero.res
-        HeelCriticalAtk()
-        if heelCritical > 1:
-            HeelAtkValue *= heelCritical
-            print("Critique !")
-        elif heelCritical == 1:
-            HeelAtkValue *= heelCritical
-            print("Nope !")
-        Hero.hp -= HeelAtkValue
         dprintf(f"{Heel.name} attacks !")
+        Heel.calculate_critical()
+        
+        HeelAtkValue = Heel.atk - Hero.res
+        Hero.hp -= HeelAtkValue
+        # What is shown during combat
+        
         dprintf(f"{Hero.name} takes {HeelAtkValue} DMG ! HP : {Hero.hp}")
+        #
+        if Heel.crit == True:
+            Heel.crit = False
+            Heel.atk //= 2
       if Hero.hp <= 0:
         Hero.hp = 0
         dprint("You lost !")
@@ -95,11 +102,11 @@ class Aventureer:
 
 
 characters = [
-    Aventureer("Jolan", "Necromancer", 90, 11, 2, 100, 2),
-    Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1),
-    Aventureer("Marcus", "Barbarian", 110, 9, 3, 100, 0),
-    Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7 ),
-    Aventureer("C", "Crit Maker", 110, 5, 0, 100, 10),
+    Aventureer("Jolan", "Necromancer", 90, 11, 2, 100, 2, crit=False),
+    Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1, crit=False),
+    Aventureer("Marcus", "Barbarian", 1100, 9, 3, 100, 5, crit=False),
+    Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7, crit=False),
+    Aventureer("C", "Crit Maker", 1100, 5, 0, 100, 5, crit=False)
 ]
 
 def choose_character():
@@ -120,24 +127,6 @@ def show_chars():
         print(f"  {character.name}")
     print(":-=-=-=-=-:")
 
-def HeroCriticalAtk():
-    
-    randomChance = randint(1,10)
-    if Hero.luck >= randomChance:
-        heroCritical = 2
-   
-    else:
-        heroCritical = 1
-    return heroCritical
-
-def HeelCriticalAtk():
-    
-    randomChance = randint(1,10)
-    if Heel.luck >= randomChance:
-        heelCritical = 2
-    else:
-        heelCritical = 1
-    return heelCritical
 
 show_chars()
 Hero = choose_character()
