@@ -9,6 +9,7 @@ def dprint(s):
         sys.stdout.flush()
         time.sleep(0.07)
     sys.stdout.write("\n")
+
 def dprintf(s):
     for c in s:
         sys.stdout.write(c)
@@ -18,24 +19,30 @@ def dprintf(s):
 
 
 class Aventureer:
-    
-    def __init__(self, name, job, hp, atk, res, gold, luck, crit):
+    # Removed the crit bool cause I think it's useless, you can deal with it differently
+    def __init__(self, name, job, hp, atk, res, gold, luck):
         self.name = name
-        self.job = job
-        self.hp = hp
-        self.atk = atk
-        self.res = res
+        self.job  = job
+        self.hp   = hp
+        self.atk  = atk
+        self.res  = res
         self.gold = gold
         self.luck = luck
+        # Would make sense to keep track of the level
+        # Since every Aventureer starts at level 1, we can assign it by default without
+        # passing it as parameter to the constructor
+        self.level = 1
 
     def full_name(self):
         return f"{self.name} the {self.job}"
 
     def level_up(self):
-        self.hp = int(self.hp * 1.05)
-        self.atk = int(self.atk + 3)
-        self.res = int(self.res + 1)
+        self.hp   = int(self.hp * 1.05)
+        self.atk  = int(self.atk + 3)
+        self.res  = int(self.res + 1)
         self.gold = int(self.gold + 100)
+        # Now here we can increment his level
+        self.level += 1
 
     def show_stats(self):
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
@@ -49,76 +56,71 @@ class Aventureer:
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:")
 
     def calculate_critical(self):
-        randomChance = randint(1,10)
-        if self.luck >= randomChance:
+        random_chance = randint(1, 10)
+
+        if self.luck >= random_chance:
             self.atk *= 2
             print(f"---------------- Critique pour {self.name}")
-            self.crit = True
         else:
-            pass
+            return
         return self.atk
+
     def attack(self, opponent):
       print(f"You are attacking {opponent.full_name()}")
 
-      while Hero.hp > 0 and Heel.hp > 0:
+      while self.hp > 0 and opponent.hp > 0:
         # WHERE THE FIGHT TAKES PLACE
-
-        # The Hero attacks
-        dprintf(f"{Hero.name} attacks !")
-        Hero.calculate_critical()
+        dprintf(f"{self.name} attacks !")
+        
+        # Calculate if the next hit will be critical, since calculate_critical modify the self.atk itself
+        self.calculate_critical()
       
-        HeroAtkValue = Hero.atk - Heel.res
-        Heel.hp -= HeroAtkValue
+        # Modified but left as a comment so you can compare, but think, you don't need that
+        hero_attack_dmg = self.atk - opponent.res
+        #HeroAtkValue = self.atk - opponent.res
+        opponent.hp -= hero_attack_dmg
 
         # What is shown during combat
         
-        dprintf(f"{Heel.name} takes {HeroAtkValue} DMG ! HP : {Heel.hp}")
-        #
-        if Hero.crit == True:
-            Hero.crit == False
-            Hero.atk //= 2
-            
-
-        # The Heel attacks
-        dprintf(f"{Heel.name} attacks !")
-        Heel.calculate_critical()
+        dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG ! HP : {opponent.hp}")
+      
+        # Now it's the turn of the opponent
+        dprintf(f"{opponent.name} attacks !")
         
-        HeelAtkValue = Heel.atk - Hero.res
-        Hero.hp -= HeelAtkValue
+        opponent.calculate_critical()
+        
+        heel_attack_dmg = opponent.atk - self.res
+        self.hp -= heel_attack_dmg
+        
         # What is shown during combat
-        
-        dprintf(f"{Hero.name} takes {HeelAtkValue} DMG ! HP : {Hero.hp}")
-        #
-        if Heel.crit == True:
-            Heel.crit = False
-            Heel.atk //= 2
-      if Hero.hp <= 0:
-        Hero.hp = 0
+        dprintf(f"{self.name} takes {heel_attack_dmg} DMG ! HP : {self.hp}")
+      if self.hp <= 0:
+        self.hp = 0
         dprint("You lost !")
-      elif Heel.hp <=0:
-        Heel.hp = 0
+      elif opponent.hp <=0:
+        self.hp = 0
         dprint("You won !")
 
-
-
+# Removed crit from here, but does that make sense when reading it ? Creating a new
+# character with a boolean flag for critical attacks ? 
 characters = [
-    Aventureer("Jolan", "Necromancer", 90, 11, 2, 100, 2, crit=False),
-    Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1, crit=False),
-    Aventureer("Marcus", "Barbarian", 1100, 9, 3, 100, 5, crit=False),
-    Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7, crit=False),
-    Aventureer("C", "Crit Maker", 1100, 5, 0, 100, 5, crit=False)
+    Aventureer("Jolan", "Necromancer", 9000, 11, 2, 100, 2),
+    Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1),
+    Aventureer("Marcus", "Barbarian", 11000, 9, 3, 100, 5),
+    Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7),
+    Aventureer("C", "Crit Maker", 1100, 5, 0, 100, 5)
 ]
 
 def choose_character():
-    Hero = input("Choose your Hero : ")
+    hero = input("Choose your Hero : ")
     for character in characters:
-        if character.name == Hero:
+        if character.name == hero:
             return character
 
 def choose_ennemy():
-    Heel = input("Choose your Nemesis : ")
+    heel = input("Choose your Nemesis : ")
     for character in characters:
-        if character.name == Heel:
+        if character.name == heel:
             return character
 
 def show_chars():
@@ -129,12 +131,12 @@ def show_chars():
 
 
 show_chars()
-Hero = choose_character()
-Heel = choose_ennemy()
-print(Hero.luck)
+hero = choose_character()
+heel = choose_ennemy()
+print(hero.luck)
 
 # Show the stats
-Hero.show_stats()
+hero.show_stats()
 
 # Attack an ennemy
-Hero.attack(Heel)
+hero.attack(heel)
