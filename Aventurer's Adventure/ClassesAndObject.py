@@ -90,7 +90,7 @@ class Aventureer:
         dprint("You lost !")
       elif Heel.hp <=0:
         Heel.hp = 0
-        dprintf("You won !")
+        dprint("You won !")
 
 
 
@@ -125,20 +125,19 @@ def HeroCriticalAtk():
     randomChance = randint(1,10)
     if Hero.luck >= randomChance:
         heroCritical = 2
-        return heroCritical
+   
     else:
         heroCritical = 1
-        return heroCritical
+    return heroCritical
 
 def HeelCriticalAtk():
     
     randomChance = randint(1,10)
     if Heel.luck >= randomChance:
         heelCritical = 2
-        return heelCritical
     else:
         heelCritical = 1
-        return heelCritical
+    return heelCritical
 
 show_chars()
 Hero = choose_character()
