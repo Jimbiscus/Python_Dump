@@ -1,8 +1,7 @@
 from random import randint
 import time
 import sys
-heelCritical = 1
-heroCritical = 1
+
 # Display char by char functions, a normal a fast one with a line break between each print
 def dprint(s):
     for c in s:
@@ -53,10 +52,11 @@ class Aventureer:
       print(f"You are attacking {opponent.full_name()}")
 
       while Hero.hp > 0 and Heel.hp > 0:
+        heelCritical = 1
+        heroCritical = 1
         # WHERE THE FIGHT TAKES PLACE
+
         # The Hero attacks
-
-
         HeroAtkValue = Hero.atk - Heel.res
         HeroCriticalAtk()
         if heroCritical > 1:
@@ -66,10 +66,12 @@ class Aventureer:
             HeroAtkValue *= heroCritical
             print("Nope !")
         Heel.hp -= HeroAtkValue
-        ###############################
+
+        # What is shown during combat
         dprintf(f"{Hero.name} attacks !")
         dprintf(f"{Heel.name} takes {HeroAtkValue} DMG ! HP : {Heel.hp}")
-        ################################
+        #
+
         # The Heel attacks
 
         HeelAtkValue = Heel.atk - Hero.res
@@ -97,7 +99,7 @@ characters = [
     Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1),
     Aventureer("Marcus", "Barbarian", 110, 9, 3, 100, 0),
     Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7 ),
-    Aventureer("Bastien", "Wizard", 110, 5, 0, 100, 6),
+    Aventureer("C", "Crit Maker", 110, 5, 0, 100, 10),
 ]
 
 def choose_character():
@@ -119,9 +121,9 @@ def show_chars():
     print(":-=-=-=-=-:")
 
 def HeroCriticalAtk():
-    heroCritical = 1
+    
     randomChance = randint(1,10)
-    if Hero.luck not in range(randomChance):
+    if Hero.luck >= randomChance:
         heroCritical = 2
         return heroCritical
     else:
@@ -129,9 +131,9 @@ def HeroCriticalAtk():
         return heroCritical
 
 def HeelCriticalAtk():
-    heelCritical = 1
+    
     randomChance = randint(1,10)
-    if Heel.luck not in range(randomChance):
+    if Heel.luck >= randomChance:
         heelCritical = 2
         return heelCritical
     else:
@@ -141,6 +143,7 @@ def HeelCriticalAtk():
 show_chars()
 Hero = choose_character()
 Heel = choose_ennemy()
+print(Hero.luck)
 
 # Show the stats
 Hero.show_stats()
