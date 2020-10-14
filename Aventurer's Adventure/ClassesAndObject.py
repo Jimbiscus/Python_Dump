@@ -60,55 +60,66 @@ class Aventureer:
 
         if self.luck >= random_chance:
             self.atk *= 2
-            print(f"---------------- Critique pour {self.name}")
+            print(f"⚡ Critique pour {self.name}")
         else:
             return
         return self.atk
 
     def attack(self, opponent):
-      print(f"You are attacking {opponent.full_name()}")
+        print(f"You are attacking {opponent.full_name()}")
 
-      while self.hp > 0 and opponent.hp > 0:
-        # WHERE THE FIGHT TAKES PLACE
-        dprintf(f"{self.name} attacks !")
+        while self.hp > 0 and opponent.hp > 0:
+            # WHERE THE FIGHT TAKES PLACE
+            dprintf(f"{self.name} 🗡️ {opponent.name}")
+            
+            # Calculate if the next hit will be critical, since calculate_critical modify the self.atk itself
+            self.calculate_critical()
         
-        # Calculate if the next hit will be critical, since calculate_critical modify the self.atk itself
-        self.calculate_critical()
-      
-        # Modified but left as a comment so you can compare, but think, you don't need that
-        hero_attack_dmg = self.atk - opponent.res
-        #HeroAtkValue = self.atk - opponent.res
-        opponent.hp -= hero_attack_dmg
+            hero_attack_dmg = self.atk - opponent.res
+            if hero_attack_dmg < 0:
+                hero_attack_dmg = 0
+            opponent.hp -= hero_attack_dmg
 
         # What is shown during combat
-        
-        dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG ! HP : {opponent.hp}")
-      
+            if self.hp <= 0:
+                dprint("You lose !")
+                break
+            elif opponent.hp <= 0:
+                dprint("You won !")
+                break
+            else: 
+                dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG from {self.name} !")
+                dprintf(f"❤️ {opponent.name} : {opponent.hp} HP")
+
         # Now it's the turn of the opponent
-        dprintf(f"{opponent.name} attacks !")
-        
-        opponent.calculate_critical()
-        
-        heel_attack_dmg = opponent.atk - self.res
-        self.hp -= heel_attack_dmg
-        
-        # What is shown during combat
-        dprintf(f"{self.name} takes {heel_attack_dmg} DMG ! HP : {self.hp}")
-      if self.hp <= 0:
-        self.hp = 0
-        dprint("You lost !")
-      elif opponent.hp <=0:
-        self.hp = 0
-        dprint("You won !")
+            if opponent.hp > 0:
+                dprintf(f"{opponent.name} 🗡️ {self.name}")
+                
+                opponent.calculate_critical()
+                    
+                heel_attack_dmg = opponent.atk - self.res
+                if heel_attack_dmg < 0:
+                    heel_attack_dmg = 0
+                self.hp -= heel_attack_dmg
+                
+            # What is shown during combat
+            if self.hp <= 0:
+                dprint("You lose !")
+            elif opponent.hp <= 0:
+                dprint("You won !")
+            else:
+                dprintf(f"{self.name} takes {heel_attack_dmg} DMG from {opponent.name} !")
+                dprintf(f"❤️  {self.name} : {self.hp} HP")
 
-# Removed crit from here, but does that make sense when reading it ? Creating a new
-# character with a boolean flag for critical attacks ? 
+
+
 characters = [
-    Aventureer("Jolan", "Necromancer", 9000, 11, 2, 100, 2),
+    Aventureer("Jolan", "Necromancer", 90, 11, 2, 100, 2),
     Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1),
-    Aventureer("Marcus", "Barbarian", 11000, 9, 3, 100, 5),
-    Aventureer("Arnaud", "Bard", 50, 9, 3, 100, 7),
-    Aventureer("C", "Crit Maker", 1100, 5, 0, 100, 5)
+    Aventureer("Marcus", "Barbarian", 110, 9, 3, 100, 5),
+    Aventureer("Arnaud", "Bard", 50, 18, 3, 100, 7),
+    Aventureer("Stalin", "Unbending", 110, 15, 0, 100, 5),
+    Aventureer("Bastien", "Magicien", 110, 12, 0, 100, 6),
 ]
 
 def choose_character():
