@@ -9,14 +9,23 @@ def dprint(s):
         sys.stdout.flush()
         time.sleep(0.07)
     sys.stdout.write("\n")
-
 def dprintf(s):
     for c in s:
         sys.stdout.write(c)
         sys.stdout.flush()
         time.sleep(0.01)
     sys.stdout.write("\n")
-
+# this defines the color codes for the text
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 class Aventureer:
     # Removed the crit bool cause I think it's useless, you can deal with it differently
@@ -59,18 +68,19 @@ class Aventureer:
         random_chance = randint(1, 10)
 
         if self.luck >= random_chance:
-            self.atk *= 2
+            self.atk *= 1.5
             print(f"⚡ Critique pour {self.name}")
         else:
             return
-        return self.atk
+        return round(self.atk, 1)
 
     def attack(self, opponent):
-        print(f"You are attacking {opponent.full_name()}")
+        print(f"{bcolors.WARNING} You are attacking {opponent.full_name()}{bcolors.ENDC}")
 
         while self.hp > 0 and opponent.hp > 0:
+            input("- - - - - - -")
             # WHERE THE FIGHT TAKES PLACE
-            dprintf(f"{self.name} 🗡️ {opponent.name}")
+            dprintf(f"{self.name} 🗡️ {opponent.name} ☠️")
             
             # Calculate if the next hit will be critical, since calculate_critical modify the self.atk itself
             self.calculate_critical()
@@ -89,11 +99,10 @@ class Aventureer:
                 break
             else: 
                 dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG from {self.name} !")
-                dprintf(f"❤️ {opponent.name} : {opponent.hp} HP")
 
         # Now it's the turn of the opponent
             if opponent.hp > 0:
-                dprintf(f"{opponent.name} 🗡️ {self.name}")
+                dprintf(f"{bcolors.FAIL}☠️  {opponent.name} 🗡️ {self.name}{bcolors.ENDC}")
                 
                 opponent.calculate_critical()
                     
@@ -106,20 +115,22 @@ class Aventureer:
             if self.hp <= 0:
                 dprint("You lose !")
             elif opponent.hp <= 0:
+                dprint(f"{opponent.hp} : 0 HP")
                 dprint("You won !")
             else:
                 dprintf(f"{self.name} takes {heel_attack_dmg} DMG from {opponent.name} !")
                 dprintf(f"❤️  {self.name} : {self.hp} HP")
+                dprintf(f"☠️  {opponent.name} : {opponent.hp} HP")
 
 
 
 characters = [
-    Aventureer("Jolan", "Necromancer", 90, 11, 2, 100, 2),
-    Aventureer("Allan", "Rogue", 100, 12, 1, 100, 1),
-    Aventureer("Marcus", "Barbarian", 110, 9, 3, 100, 5),
-    Aventureer("Arnaud", "Bard", 50, 18, 3, 100, 7),
-    Aventureer("Stalin", "Unbending", 110, 15, 0, 100, 5),
-    Aventureer("Bastien", "Magicien", 110, 12, 0, 100, 6),
+    Aventureer("Jolan", "Necromancer", 25, 11, 2, 100, 2),
+    Aventureer("Allan", "Rogue", 28, 12, 1, 100, 1),
+    Aventureer("Marcus", "Barbarian", 30, 9, 3, 100, 1),
+    Aventureer("Arnaud", "Bard", 15, 18, 3, 100, 7),
+    Aventureer("Stalin", "Unbending", 25, 15, 3, 100, 5),
+    Aventureer("Bastien", "Magicien", 25, 20, 3, 100, 6),
 ]
 
 def choose_character():
@@ -144,7 +155,7 @@ def show_chars():
 show_chars()
 hero = choose_character()
 heel = choose_ennemy()
-print(hero.luck)
+
 
 # Show the stats
 hero.show_stats()
