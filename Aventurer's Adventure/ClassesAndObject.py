@@ -220,7 +220,7 @@ def initGame():
 
 intro()
 
-hero = Aventureer("Jimmy")
+hero = choose_character()
 heel = choose_ennemy()
 
 initGame()
