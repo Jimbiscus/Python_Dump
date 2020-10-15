@@ -31,11 +31,12 @@ class bcolors:
     UNDERLINE = '\033[4m'
 # WIP
 class Character:
-    def __init__(self,name, hp, atk, res):
+    def __init__(self,name, hp, defaultHp, atk, res):
         self.name = name
         self.hp = hp
         self.atk = atk
         self.res = res
+        self.defaultHp = defaultHp
 
     def is_dead(self):
         if self.hp <= 0:
@@ -193,14 +194,6 @@ def intro():
                                                                             """)
     show_chars()
 
-
-
-
-
-intro()
-hero = choose_character()
-heel = choose_ennemy()
-
 def initGame():
     hero.show_stats()
     input(f"Ready to go on an adventure ? Press [ENTER]".center(75))
@@ -213,7 +206,7 @@ def initGame():
         print(f"{heel.name} est mort")
         heel.heal()
         heel = choose_ennemy()
-        
+        4
 
         heel.is_dead = False
     if heel.is_dead == False:
@@ -222,4 +215,12 @@ def initGame():
         hero.show_stats()
         hero.attack(heel)
         initGame()
+
+
+
+intro()
+
+hero = Aventureer("Jimmy")
+heel = choose_ennemy()
+
 initGame()
