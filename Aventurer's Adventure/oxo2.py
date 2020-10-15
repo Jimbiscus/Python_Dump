@@ -11,7 +11,7 @@ board = [
 
 
 # --- Functions ---
-# display the board and its indexes
+
 def display():
     txt = "  01234\n"
     y = 0
@@ -22,18 +22,21 @@ def display():
             txt += data
         txt += "\n"
     print(txt)
-# returns what's at the x y position of the board
+
 def give(x, y):
     return board[y][x]
-# place stuff on board
-def place(carac, x, y):
+
+def place(carac):
+    x = int(input("x : "))
+    y = int(input("y : "))
     board[y][x] = carac
-# resets the board
+
+
 def init():
     for n in range(len(board)):
         del board[0]
         board.append(['.', '.', '.', '.', '.'])
-# checks if the board has no "."
+
 def is_full():
     full = True
 
@@ -42,18 +45,24 @@ def is_full():
             if data == '.':
                 full = False
 
-    return (f"Board full : {full}") 
-
+    return full
+def is_xxx():
+    for row in board:
+        pass
 # --- here start the script ---
-place(PLAYER_1, 3, 2)
-display()
-display()
-print(is_full()) # return False
-"""
-for y in range(5):
-    for x in range(5):
-        place(PLAYER_2, x, y)
-display()
 
-print(is_full()) # return True
-"""
+x = 0
+while True:
+    if x == 0: 
+        print("Player One")
+        place(PLAYER_1)
+        display()
+        x = 1
+        is_full()
+    elif x == 1:
+        
+        print("Player Two")
+        place(PLAYER_2)
+        display()
+        x = 0
+        is_full()
