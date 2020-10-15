@@ -40,7 +40,7 @@ class Character:
     def is_dead(self):
         if self.hp <= 0:
             print(f"{self.name} is dead")
-
+            self.hp = self.defaultHp
 class Aventureer(Character):
     # TODO : IMPLEMENT MAX XP VALUES PER LEVEL 
     def __init__(self, name, job, hp, defaultHp, atk, res, gold, luck,is_dead):
@@ -59,6 +59,8 @@ class Aventureer(Character):
         # Since every Aventureer starts at level 1, we can assign it by default without
         # passing it as parameter to the constructor
         self.level = 1
+    def heal(self):
+        self.hp = self.defaultHp
 
     def full_name(self):
         return f"{self.name} the {self.job}"
@@ -76,11 +78,12 @@ class Aventureer(Character):
         dprintf(f"Stats of {self.full_name()}".center(75))
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:".center(75))
         dprintf(f"LEVEL :  {self.level}".center(75))
-        dprintf(f"HP : {self.hp} ".center(75))
+        dprintf(f"HP : {self.hp} / {self.hp} ".center(75))
         dprintf(f"STR :  {self.atk}".center(75))
         dprintf(f"DEF :  {self.res} ".center(75))
         dprintf(f"Gold : {self.gold} ".center(75))
         dprintf(f"Luck : {self.luck} ".center(75))
+
         dprintf(":-=-=-=-=-=-=-=-=-=-=-=-=-=-:".center(75))
 
     def calculate_critical(self):
@@ -109,6 +112,7 @@ class Aventureer(Character):
                     hero_attack_dmg = 0
                 opponent.hp -= hero_attack_dmg
                 dprintf(f"{opponent.name} takes {hero_attack_dmg} DMG from {self.name} !")
+                dprintf(f"☠️  {opponent.name} : {opponent.hp} / {opponent.defaultHp} HP")
                 if opponent.hp > 0:
                         dprintf(f"{bcolors.FAIL}☠️  {opponent.name} 🗡️ {self.name}{bcolors.ENDC}")             
                         opponent.calculate_critical()                   
@@ -119,12 +123,13 @@ class Aventureer(Character):
                     # What is shown during combat
                 
                         dprintf(f"{self.name} takes {heel_attack_dmg} DMG from {opponent.name} !")
-                        dprintf(f"❤️  {self.name} : {self.hp} HP")
-                        dprintf(f"☠️  {opponent.name} : {opponent.hp} HP")
+                        dprintf(f"❤️  {self.name} : {self.hp} / {self.defaultHp} HP")
+                        
 
                 if self.hp <= 0:
                     dprint("You lose !")
                     dprint(f"{self.name} : 0 HP")
+                    hero.is_dead = True
                     
                     
                 if opponent.hp <= 0:
@@ -146,12 +151,13 @@ class Ennemy(Character):
 
 
 characters = [
+    #           (self, name, job, hp, defaultHp, atk, res, gold, luck,is_dead):
     Aventureer("Jolan", "Necromancer", 25, 25, 11, 2, 100, 2, False),
     Aventureer("Allan", "Rogue", 28, 28, 12, 1, 100, 1, False),
     Aventureer("Marcus", "Barbarian", 30, 30, 9, 3, 100, 1, False),
     Aventureer("Arnaud", "Bard", 15, 15, 18, 3, 100, 7, False),
-    Aventureer("Stalin", "Unbending", 25, 30, 15, 3, 100, 5, False),
-    Aventureer("Bastien", "Magicien", 25, 30, 20, 3, 100, 6, False),
+    Aventureer("Stalin", "Unbending", 25, 25, 15, 3, 100, 5, False),
+    Aventureer("Bastien", "Magicien", 25, 25, 20, 3, 100, 6, False),
 ]
 
 def choose_character():
@@ -166,8 +172,8 @@ def choose_ennemy():
         if character.name == heel:
             return character
 def set_ennemy():
-    heel = choice(characters)
-    return heel
+    opponent = choice(characters)
+    return opponent
 
 def show_chars():
     print(":-=-=-=-=-:".center(75))
@@ -199,22 +205,21 @@ def initGame():
     hero.show_stats()
     input(f"Ready to go on an adventure ? Press [ENTER]".center(75))
     hero.attack(heel)
+    if hero.is_dead == True:
+        print(f"Vous êtes mort !")
+        hero.is_dead == False
+        hero.heal()
+    if heel.is_dead == True:
+        print(f"{heel.name} est mort")
+        heel.heal()
+        heel = choose_ennemy()
+        
 
+        heel.is_dead = False
+    if heel.is_dead == False:
+        print("Ok")
+        heel.level_up(1)
+        hero.show_stats()
+        hero.attack(heel)
+        initGame()
 initGame()
-if hero.is_dead == True:
-    print(f"Vous êtes mort !")
-    hero.is_dead == False
-    hero.hp = hero.defaultHp
-if heel.is_dead == True:
-    print(f"{heel.name} est mort")
-    heel.hp = heel.defaultHp
-    set_ennemy()
-    if heel == hero.name:
-        choice(characters)
-    heel.is_dead = False
-if heel.is_dead == False:
-    print("Ok")
-    heel.level_up(1)
-    hero.show_stats()
-    hero.attack(heel)
-    initGame()
