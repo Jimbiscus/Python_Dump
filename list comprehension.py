@@ -10,3 +10,11 @@ def find_even_nums(num):
 
 
 print(find_even_nums(2))
+
+l = ["ananas","gateau","chataigne","petanque","marguerite","saperlipopette","tahin"]
+
+m = []
+
+m = [i for i in l if i[0] == "a"]
+
+print(m)

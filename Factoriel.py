@@ -8,9 +8,9 @@ def add_indexes(lst):
 l = [1, 4, 5, 9, 0]
 print(add_indexes(l))
 def factorial(n):
-	if n = 1 or n 0:
+	if n == 0:
 		return 1
 	else:
-		return n * (n - 1)
+		return n * factorial(n-1)
 
-print (factorial(4))
+print (factorial(5))
